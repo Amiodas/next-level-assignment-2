@@ -29,8 +29,19 @@ const getSingleProductByIdFromDB = async (id: string) => {
   return product;
 };
 
+// Update product
+const updateProductByID = async (id: string, data: Product) => {
+  const updateData = await ProductModel.findByIdAndUpdate(id, data, {
+    new: true,
+    upsert: true,
+    runValidators: true,
+  });
+  return updateData;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductByIdFromDB,
+  updateProductByID,
 };
