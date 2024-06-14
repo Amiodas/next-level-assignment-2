@@ -23,11 +23,11 @@ const createProduct = async (req: Request, res: Response) => {
 // Get all product
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const searchTerm = req.query.searchTerm;
-    const result = await ProductServices.getAllProductsFromDB(searchTerm);
+    const searchedItem = req.query.searchProduct;
+    const result = await ProductServices.getAllProductsFromDB(searchedItem);
     res.status(200).json({
       success: true,
-      message: "All Products fetched successfully!",
+      message: "All products fetched successfully!",
       data: result,
     });
   } catch (error: any) {
@@ -42,12 +42,12 @@ const getAllProduct = async (req: Request, res: Response) => {
 // Get single product by id
 const getSingleProductByID = async (req: Request, res: Response) => {
   try {
-    const id = req.params.productID;
+    const id = req.params.productId;
     const result = await ProductServices.getSingleProductByIdFromDB(id);
 
     res.status(200).json({
       success: true,
-      message: "Specified Id product data fetch successfully!",
+      message: "Single product get successfully!",
       data: result,
     });
   } catch (error: any) {
@@ -64,9 +64,9 @@ const getSingleProductByID = async (req: Request, res: Response) => {
 // Update product
 const updateProduct = async (req: Request, res: Response) => {
   try {
-    const id = req.params.productID;
+    const id = req.params.productId;
 
-    const result = await ProductServices.updateProductByID(id, req.body);
+    const result = await ProductServices.updateProductById(id, req.body);
     res.status(200).json({
       success: true,
       message: "Product updated successfully!",
@@ -75,7 +75,28 @@ const updateProduct = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong! Update to failed, Internal Server error",
+      message: "Something went wrong! Update failed",
+      error:
+        error.issues.map((item: { message: unknown }) => item.message) ||
+        "Internal Server Error",
+    });
+  }
+};
+
+// Delete product
+const deleteProduct = (req: Request, res: Response) => {
+  try {
+    const id = req.params.productId;
+    ProductServices.deleteProductById(id);
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully !",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong! Product can not delete.",
       error:
         error.issues.map((item: { message: unknown }) => item.message) ||
         "Internal Server Error",
@@ -88,4 +109,5 @@ export const ProductControllers = {
   getAllProduct,
   getSingleProductByID,
   updateProduct,
+  deleteProduct,
 };
