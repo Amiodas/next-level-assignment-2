@@ -47,4 +47,4 @@ const ProductSchema = new Schema<Product>({
   inventory: [{ type: ProductInventorySchema }],
 });
 
-export const ProductModel = model("Product", ProductSchema);
+export const ProductModel = model<Product>("Product", ProductSchema);
