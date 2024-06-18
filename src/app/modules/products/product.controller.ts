@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { ProductServices } from "./product.service";
+import ProductZodValidationSchema from "./product.validation";
 
 // Create Product
 const createProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
-    const result = await ProductServices.createProductIntoDB(product);
+    const validateData: any = ProductZodValidationSchema.parse(product);
+    const result = await ProductServices.createProductIntoDB(validateData);
     res.status(200).json({
       success: true,
       message: "Product is added successfully",
