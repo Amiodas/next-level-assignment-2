@@ -1,5 +1,6 @@
 import { ProductModel } from "../products/product.model";
 import { Order } from "./order.interface";
+import { OrderModel } from "./order.model";
 
 const createOrderIntoDB = async (orderItem: Order) => {
   console.log(orderItem);
@@ -21,9 +22,20 @@ const createOrderIntoDB = async (orderItem: Order) => {
         }
       );
     }
+    const createOrder = await OrderModel.create(orderItem);
+    return {
+      success: true,
+      message: "Order created successfully!",
+      data: createOrder,
+    };
   }
+
+  return {
+    success: false,
+    message: "Insufficient quantity available inventory",
+  };
 };
 
 export const OrderServices = {
-  createOrderIntoDB
+  createOrderIntoDB,
 };
