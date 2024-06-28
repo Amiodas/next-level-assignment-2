@@ -8,11 +8,12 @@ const createOrder = async (req: Request, res: Response) => {
     const order: any = req.body;
     const validateOrder = OrderValidationSchema.parse(order);
     const result: any = await OrderServices.createOrderIntoDB(validateOrder);
+    console.log(result);
 
     res.status(200).json({
-      success: result.success,
-      message: result.message,
-      data: result.data,
+      success: result?.success,
+      message: result?.message,
+      data: result?.data,
     });
   } catch (error: any) {
     res.status(500).json({
